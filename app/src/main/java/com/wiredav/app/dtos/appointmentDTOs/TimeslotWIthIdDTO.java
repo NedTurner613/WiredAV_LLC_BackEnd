@@ -3,10 +3,12 @@ package com.wiredav.app.dtos.appointmentDTOs;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class TimeslotWIthIdDTO {
     private Long timeslotId;
-    private String startTime;
-    private String endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 }
