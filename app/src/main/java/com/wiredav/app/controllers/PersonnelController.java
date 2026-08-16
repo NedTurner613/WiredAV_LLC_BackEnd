@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("api/personnel")
 public class PersonnelController {
 
     @Autowired
@@ -30,15 +31,15 @@ public class PersonnelController {
                 .body(loginResponse);
     }
 
-    @PostMapping("/personnel")
-    public ResponseEntity<PersonnelInfoDTO> AddPersonnel(@RequestBody AddPersonnelRequestDTO newPersonnel){
-        PersonnelInfoDTO createdPersonnel = personnelService.AddPersonnel(newPersonnel);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(createdPersonnel);
-    }
+//    @PostMapping("/personnel")
+//    public ResponseEntity<PersonnelInfoDTO> AddPersonnel(@RequestBody AddPersonnelRequestDTO newPersonnel){
+//        PersonnelInfoDTO createdPersonnel = personnelService.AddPersonnel(newPersonnel);
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(createdPersonnel);
+//    }
 
-    @DeleteMapping("/personnel/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> RemovePersonnel(@PathVariable("id") Long id){
         Boolean result = personnelService.RemovePersonnel(id);
         return ResponseEntity
@@ -46,7 +47,7 @@ public class PersonnelController {
                 .build();
     }
 
-    @PostMapping("/personnel")
+    @PostMapping("/update")
     public ResponseEntity<PersonnelInfoDTO> UpdatePersonnel(@RequestBody PersonnelInfoDTO newInfo){
         PersonnelInfoDTO updatedPersonnel = personnelService.UpdatePersonnel(newInfo);
         return ResponseEntity
@@ -55,11 +56,9 @@ public class PersonnelController {
     }
 
     @GetMapping("/personnel/{id}")
-    public ResponseEntity<PersonnelInfoDTO> GetPersonnel(@PathVariable("id") Long id){
-        PersonnelInfoDTO personnel = personnelService.GetPersonnel(id);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(personnel);
+    public PersonnelInfoDTO GetPersonnel(@PathVariable("id") Long id){
+        var personnel = personnelService.GetPersonnel(id);
+        return personnel.toResponse();
     }
 
     @GetMapping("/personnel/{role}")
