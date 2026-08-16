@@ -23,6 +23,11 @@ public class Timeslot {
     @OneToOne(mappedBy = "timeslot")
     private Appointments appointments;
 
+    public Timeslot(LocalDateTime startTime, LocalDateTime endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public Timeslot() {}
 
     public void setTimeslotId(long timeslotId) {

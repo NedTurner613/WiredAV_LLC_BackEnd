@@ -9,7 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponseDTO {
-    private String token;
-    private Long userId;
+public record LoginResponseDTO(
+        String token,
+        Long userId
+) {
 }

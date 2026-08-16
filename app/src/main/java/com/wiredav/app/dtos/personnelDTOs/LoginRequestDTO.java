@@ -1,13 +1,10 @@
 package com.wiredav.app.dtos.personnelDTOs;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class LoginRequestDTO {
-    private String email;
-    private String password;
+
+
+public record LoginRequestDTO(
+        String email,
+        String password
+) {
 }

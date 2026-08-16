@@ -1,6 +1,6 @@
 package com.wiredav.app.entities;
 
-import com.wiredav.app.enums.PersonnelRole;
+import com.wiredav.app.dtos.personnelDTOs.PersonnelInfoDTO;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -22,7 +22,7 @@ public class Personnel {
     private String lastName;
 
     @Column(name = "role", nullable = false)
-    private PersonnelRole role;
+    private Integer role;
 
     @Column(name = "personnelEmail", nullable = false)
     private String personnelEmail;
@@ -33,12 +33,21 @@ public class Personnel {
     @OneToMany(mappedBy = "personnel", cascade = CascadeType.ALL)
     private Set<Appointments> appointments = new HashSet<>();
 
-    public Personnel(String firstName, String lastName, PersonnelRole role, String personnelEmail, String password) {
+    //For Admins
+    public Personnel(String firstName, String lastName, Integer role, String personnelEmail, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
         this.personnelEmail = personnelEmail;
         this.password = password;
+    }
+
+    //For technicians
+    public Personnel(String firstName, String lastName, Integer role, String personnelEmail) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.personnelEmail = personnelEmail;
     }
 
     public Personnel() {}
@@ -67,11 +76,11 @@ public class Personnel {
         return lastName;
     }
 
-    public void setRole(PersonnelRole role) {
+    public void setRole(Integer role) {
         this.role = role;
     }
 
-    public PersonnelRole getRole() {
+    public Integer getRole() {
         return role;
     }
 
@@ -97,5 +106,18 @@ public class Personnel {
 
     public Set<Appointments> getAppointments() {
         return appointments;
+    }
+
+    //Add toResponse method to all entities
+    public PersonnelInfoDTO toResponse() {
+        PersonnelInfoDTO dto = new PersonnelInfoDTO(
+                this.personnelId,
+                this.firstName,
+                this.lastName,
+                this.personnelEmail,
+                this.role
+        );
+
+        return dto;
     }
 }

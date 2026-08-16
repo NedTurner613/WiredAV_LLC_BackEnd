@@ -1,7 +1,5 @@
 package com.wiredav.app.entities;
 
-import com.wiredav.app.enums.ApptStatus;
-import com.wiredav.app.enums.ApptType;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -20,7 +18,7 @@ public class Appointments {
     private Clients client;
 
     @Column(name = "status", nullable = false)
-    private ApptStatus status;
+    private Integer status;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "timeslotId", referencedColumnName = "timeslotId")
@@ -37,12 +35,15 @@ public class Appointments {
     private LocalDateTime updatedAt;
 
     @Column(name = "appointmentType", nullable = false)
-    private ApptType appointmentType;
+    private Integer appointmentType;
 
-    public Appointments(ApptStatus status, Timeslot timeslotId, ApptType appointmentType) {
+    public Appointments(Integer status, Timeslot timeslotId, Integer appointmentType) {
         this.status = status;
         this.timeslot = timeslot;
         this.appointmentType = appointmentType;
+        this.personnel = personnel;
+        this.client = client;
+        //Create entity functions to set updatedAt and createdAt values
     }
 
     public Appointments() {}
@@ -63,11 +64,11 @@ public class Appointments {
         return client;
     }
 
-    public void setStatus(ApptStatus status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public ApptStatus getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
@@ -103,11 +104,11 @@ public class Appointments {
         return updatedAt;
     }
 
-    public void setAppointmentType(ApptType appointmentType) {
+    public void setAppointmentType(Integer appointmentType) {
         this.appointmentType = appointmentType;
     }
 
-    public ApptType getAppointmentType() {
+    public Integer getAppointmentType() {
         return appointmentType;
     }
 }
