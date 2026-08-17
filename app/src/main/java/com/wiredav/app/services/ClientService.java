@@ -8,16 +8,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ClientService {
-
-    public GetClientsListResponseDTO GetClients(){
-        return new GetClientsListResponseDTO();
-    }
-
-    public GetClientResponseDTO GetClient(Long id){
-        return new GetClientResponseDTO();
-    }
-
-    public AddClientResponseDTO AddClient(AddClientRequestDTO newClient){
-        return new AddClientResponseDTO();
-    }
+//
+//    public GetClientsListResponseDTO GetClients(){
+//        return new GetClientsListResponseDTO();
+//    }
+//
+//    public GetClientResponseDTO GetClient(Long id){
+//        return new GetClientResponseDTO();
+//    }
+//
+//    public AddClientResponseDTO AddClient(AddClientRequestDTO newClient){
+//        return new AddClientResponseDTO();
+//    }
 }

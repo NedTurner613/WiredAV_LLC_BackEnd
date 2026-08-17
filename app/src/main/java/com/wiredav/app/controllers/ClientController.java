@@ -17,27 +17,27 @@ public class ClientController {
     private ClientService clientService;
 
 
-    @GetMapping("/clients")
-    public ResponseEntity<GetClientsListResponseDTO> GetClients(){
-        GetClientsListResponseDTO clientsList = clientService.GetClients();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(clientsList);
-    }
-
-    @GetMapping("/client/{id}")
-    public ResponseEntity<GetClientResponseDTO> GetClient(@PathVariable("id") Long id){
-        GetClientResponseDTO clientInfo = clientService.GetClient(id);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(clientInfo);
-    }
-
-    @PostMapping("/client")
-    public ResponseEntity<AddClientResponseDTO> AddClient(@RequestBody AddClientRequestDTO newClient){
-        AddClientResponseDTO createdClient = clientService.AddClient(newClient);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(createdClient);
-    }
+//    @GetMapping("/clients")
+//    public ResponseEntity<GetClientsListResponseDTO> GetClients(){
+//        GetClientsListResponseDTO clientsList = clientService.GetClients();
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(clientsList);
+//    }
+//
+//    @GetMapping("/client/{id}")
+//    public ResponseEntity<GetClientResponseDTO> GetClient(@PathVariable("id") Long id){
+//        GetClientResponseDTO clientInfo = clientService.GetClient(id);
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(clientInfo);
+//    }
+//
+//    @PostMapping("/client")
+//    public ResponseEntity<AddClientResponseDTO> AddClient(@RequestBody AddClientRequestDTO newClient){
+//        AddClientResponseDTO createdClient = clientService.AddClient(newClient);
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(createdClient);
+//    }
 }
