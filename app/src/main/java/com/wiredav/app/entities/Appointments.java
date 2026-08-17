@@ -37,9 +37,9 @@ public class Appointments {
     @Column(name = "appointmentType", nullable = false)
     private Integer appointmentType;
 
-    public Appointments(Integer status, Timeslot timeslotId, Integer appointmentType) {
+    public Appointments(Integer status, Timeslot timeslotId, Integer appointmentType, Personnel personnel, Clients client) {
         this.status = status;
-        this.timeslot = timeslot;
+        this.timeslot = timeslotId;
         this.appointmentType = appointmentType;
         this.personnel = personnel;
         this.client = client;

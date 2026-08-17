@@ -11,25 +11,25 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/personnel")
 public class PersonnelController {
+//
+//    @Autowired
+//    private PersonnelService personnelService;
 
-    @Autowired
-    private PersonnelService personnelService;
-
-    @PostMapping("/register")
-    public ResponseEntity<Void> RegisterUser(@RequestBody RegisterUserRequestDTO newUser){
-        Boolean result = personnelService.Register(newUser);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .build();
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> Login(@RequestBody LoginRequestDTO loginInfo){
-        LoginResponseDTO loginResponse = personnelService.Login(loginInfo);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(loginResponse);
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<Void> RegisterUser(@RequestBody RegisterUserRequestDTO newUser){
+//        Boolean result = personnelService.Register(newUser);
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .build();
+//    }
+//
+//    @PostMapping("/login")
+//    public ResponseEntity<LoginResponseDTO> Login(@RequestBody LoginRequestDTO loginInfo){
+//        LoginResponseDTO loginResponse = personnelService.Login(loginInfo);
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(loginResponse);
+//    }
 
 //    @PostMapping("/personnel")
 //    public ResponseEntity<PersonnelInfoDTO> AddPersonnel(@RequestBody AddPersonnelRequestDTO newPersonnel){
@@ -39,34 +39,34 @@ public class PersonnelController {
 //                .body(createdPersonnel);
 //    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> RemovePersonnel(@PathVariable("id") Long id){
-        Boolean result = personnelService.RemovePersonnel(id);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .build();
-    }
-
-    @PostMapping("/update")
-    public ResponseEntity<PersonnelInfoDTO> UpdatePersonnel(@RequestBody PersonnelInfoDTO newInfo){
-        PersonnelInfoDTO updatedPersonnel = personnelService.UpdatePersonnel(newInfo);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(updatedPersonnel);
-    }
-
-    @GetMapping("/personnel/{id}")
-    public PersonnelInfoDTO GetPersonnel(@PathVariable("id") Long id){
-        var personnel = personnelService.GetPersonnel(id);
-        return personnel.toResponse();
-    }
-
-    @GetMapping("/personnel/{role}")
-    public ResponseEntity<GetPersonnelListResponseDTO> GetPersonnelList(@PathVariable("role") PersonnelRole role){
-        GetPersonnelListResponseDTO personnelList = personnelService.GetPersonnelList(role);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(personnelList);
-    }
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> RemovePersonnel(@PathVariable("id") Long id){
+//        Boolean result = personnelService.RemovePersonnel(id);
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .build();
+//    }
+//
+//    @PostMapping("/update")
+//    public ResponseEntity<PersonnelInfoDTO> UpdatePersonnel(@RequestBody PersonnelInfoDTO newInfo){
+//        PersonnelInfoDTO updatedPersonnel = personnelService.UpdatePersonnel(newInfo);
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(updatedPersonnel);
+//    }
+//
+//    @GetMapping("/personnel/{id}")
+//    public PersonnelInfoDTO GetPersonnel(@PathVariable("id") Long id){
+//        var personnel = personnelService.GetPersonnel(id);
+//        return personnel.toResponse();
+//    }
+//
+//    @GetMapping("/personnel/{role}")
+//    public ResponseEntity<GetPersonnelListResponseDTO> GetPersonnelList(@PathVariable("role") PersonnelRole role){
+//        GetPersonnelListResponseDTO personnelList = personnelService.GetPersonnelList(role);
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(personnelList);
+//    }
 
 }
