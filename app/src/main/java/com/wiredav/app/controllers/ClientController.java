@@ -11,10 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/clients")
 public class ClientController {
-
-    @Autowired
-    private ClientService clientService;
+//
+//    @Autowired
+//    private ClientService clientService;
 
 
 //    @GetMapping("/clients")

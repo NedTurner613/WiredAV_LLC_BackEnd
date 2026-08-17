@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/api/appointments")
 public class AppointmentController {
-
-    @Autowired
-    private AppointmentService appointmentService;
+//
+//    @Autowired
+//    private AppointmentService appointmentService;
 
 //    @GetMapping("/appointments")
 //    public ResponseEntity<GetAppointmentsResponseDTO> GetAppointments(){

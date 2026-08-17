@@ -26,7 +26,7 @@ public class Clients {
     @Column(name = "emailAddress", nullable = false)
     private String emailAddress;
 
-    @OneToMany(mappedBy = "appointments", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private Set<Appointments> appointments = new HashSet<>();
 
     public Clients(String firstName, String lastName, String phoneNumber, String emailAddress) {
