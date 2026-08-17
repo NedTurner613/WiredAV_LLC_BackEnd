@@ -1,7 +1,10 @@
 package com.wiredav.app.dtos.personnelDTOs;
 
 
-public class LoginRequestDTO {
-    private String email;
-    private String password;
+
+
+public record LoginRequestDTO(
+        String email,
+        String password
+) {
 }
