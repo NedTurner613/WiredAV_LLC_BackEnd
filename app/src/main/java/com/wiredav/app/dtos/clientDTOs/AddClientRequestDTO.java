@@ -1,17 +1,11 @@
 package com.wiredav.app.dtos.clientDTOs;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+public record AddClientRequestDTO(
+    Long id,
+    String firstName,
+    String lastName,
+    String email,
+    String phoneNumber
+){}
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class AddClientRequestDTO {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-}
+
