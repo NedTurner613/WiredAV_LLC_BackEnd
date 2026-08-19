@@ -4,41 +4,26 @@ import com.wiredav.app.dtos.clientDTOs.AddClientRequestDTO;
 import com.wiredav.app.dtos.clientDTOs.AddClientResponseDTO;
 import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import com.wiredav.app.dtos.clientDTOs.GetClientsListResponseDTO;
+import com.wiredav.app.entities.Clients;
 import com.wiredav.app.services.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/clients")
+@RequestMapping("/api/v1/clients")
 public class ClientController {
-//
-//    @Autowired
-//    private ClientService clientService;
+    private final ClientService clientService;
 
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
+    }
 
-//    @GetMapping("/clients")
-//    public ResponseEntity<GetClientsListResponseDTO> GetClients(){
-//        GetClientsListResponseDTO clientsList = clientService.GetClients();
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(clientsList);
-//    }
-//
-//    @GetMapping("/client/{id}")
-//    public ResponseEntity<GetClientResponseDTO> GetClient(@PathVariable("id") Long id){
-//        GetClientResponseDTO clientInfo = clientService.GetClient(id);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(clientInfo);
-//    }
-//
-//    @PostMapping("/client")
-//    public ResponseEntity<AddClientResponseDTO> AddClient(@RequestBody AddClientRequestDTO newClient){
-//        AddClientResponseDTO createdClient = clientService.AddClient(newClient);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(createdClient);
-//    }
+    @PostMapping()
+    public ResponseEntity<Clients> addClient(@RequestBody AddClientRequestDTO request) {
+        Clients createdClient = clientService.createClient(request);
+        return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
+    }
 }
