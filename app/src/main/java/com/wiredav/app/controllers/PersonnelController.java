@@ -1,6 +1,7 @@
 package com.wiredav.app.controllers;
 
 import com.wiredav.app.dtos.personnelDTOs.*;
+import com.wiredav.app.entities.Personnel;
 import com.wiredav.app.enums.PersonnelRole;
 import com.wiredav.app.services.PersonnelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/personnel")
 public class PersonnelController {
 //
-//    @Autowired
-//    private PersonnelService personnelService;
+    private PersonnelService personnelService;
 
 //    @PostMapping("/register")
 //    public ResponseEntity<Void> RegisterUser(@RequestBody RegisterUserRequestDTO newUser){
@@ -55,11 +55,11 @@ public class PersonnelController {
 //                .body(updatedPersonnel);
 //    }
 //
-//    @GetMapping("/personnel/{id}")
-//    public PersonnelInfoDTO GetPersonnel(@PathVariable("id") Long id){
-//        var personnel = personnelService.GetPersonnel(id);
-//        return personnel.toResponse();
-//    }
+    @GetMapping("/{personnelId}")
+    public ResponseEntity<PersonnelInfoDTO> GetPersonnel(@PathVariable("personnelId") Long id){
+        var personnel = personnelService.getPersonnel(id).toResponse();
+        return ResponseEntity.ok(personnel);
+    }
 //
 //    @GetMapping("/personnel/{role}")
 //    public ResponseEntity<GetPersonnelListResponseDTO> GetPersonnelList(@PathVariable("role") PersonnelRole role){
