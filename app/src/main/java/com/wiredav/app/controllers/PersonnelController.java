@@ -2,12 +2,13 @@ package com.wiredav.app.controllers;
 
 import com.wiredav.app.dtos.personnelDTOs.*;
 import com.wiredav.app.entities.Personnel;
-import com.wiredav.app.enums.PersonnelRole;
 import com.wiredav.app.services.PersonnelService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/personnel")
@@ -15,14 +16,20 @@ public class PersonnelController {
 //
     private PersonnelService personnelService;
 
-//    @PostMapping("/register")
-//    public ResponseEntity<Void> RegisterUser(@RequestBody RegisterUserRequestDTO newUser){
-//        Boolean result = personnelService.Register(newUser);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .build();
-//    }
-//
+    public PersonnelController(PersonnelService personnelService) {
+        this.personnelService = personnelService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AddPersonnelResponseDTO> registerUser(@RequestBody AddPersonnelRequestDTO newUser){
+        System.out.println("If you see this line, the service worked");
+        var result = personnelService.registerPersonnel(newUser);
+        System.out.println("If you see this line, you at least got to just before the return in the controller");
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(result.toAddPersonnelResponseDTO());
+    }
+
 //    @PostMapping("/login")
 //    public ResponseEntity<LoginResponseDTO> Login(@RequestBody LoginRequestDTO loginInfo){
 //        LoginResponseDTO loginResponse = personnelService.Login(loginInfo);
@@ -59,6 +66,15 @@ public class PersonnelController {
     public ResponseEntity<PersonnelInfoDTO> GetPersonnel(@PathVariable("personnelId") Long id){
         var personnel = personnelService.getPersonnel(id).toResponse();
         return ResponseEntity.ok(personnel);
+    }
+
+    @GetMapping
+    public ResponseEntity<GetPersonnelListWrapper> getAllPersonnel() {
+        var personnelList = personnelService.GetPersonnelList();
+        Set<GetPersonnelListResponseDTO> response = personnelList.stream().map(Personnel::toPersonnelListResponseDTO).collect(Collectors.toSet());
+        GetPersonnelListWrapper wrappedResponse = new GetPersonnelListWrapper(response);
+
+        return ResponseEntity.ok(wrappedResponse);
     }
 //
 //    @GetMapping("/personnel/{role}")

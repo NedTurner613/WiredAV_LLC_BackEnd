@@ -2,24 +2,32 @@ package com.wiredav.app.services;
 
 import com.wiredav.app.dtos.personnelDTOs.*;
 import com.wiredav.app.entities.Personnel;
-import com.wiredav.app.enums.PersonnelRole;
 import com.wiredav.app.repositories.PersonnelRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Service
+@RequiredArgsConstructor
 public class PersonnelService {
 
     private final PersonnelRepository personnelRepository;
 
-    public PersonnelService(PersonnelRepository personnelRepository) {
-        this.personnelRepository = personnelRepository;
+    public Personnel registerPersonnel(AddPersonnelRequestDTO request){
+        Personnel newPersonnel = Personnel.builder()
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .personnelEmail(request.email())
+                .role(request.role())
+                .build();
+
+
+        return personnelRepository.save(newPersonnel);
     }
-//
-//    public Boolean Register(RegisterUserRequestDTO newUser){
-//        return true;
-//    }
-//
+
 //    public LoginResponseDTO Login(LoginRequestDTO loginInfo){
 //        return new LoginResponseDTO();
 //    }
@@ -41,12 +49,19 @@ public class PersonnelService {
 
         if (personnel.isPresent()) {
             return personnel.get();
+        } else {
+            return null;
+        }
+    }
+
+    public Set<Personnel> GetPersonnelList(){
+        var allPersonnel = personnelRepository.findAll();
+        Set<Personnel> personnelList = new HashSet<>();
+
+        for (Personnel personnel : allPersonnel) {
+            personnelList.add(personnel);
         }
 
-        return null;
+        return personnelList;
     }
-//
-//    public GetPersonnelListResponseDTO GetPersonnelList(PersonnelRole role){
-//        return new GetPersonnelListResponseDTO();
-//    }
 }
