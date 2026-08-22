@@ -1,13 +1,23 @@
 package com.wiredav.app.entities;
 
+import com.wiredav.app.dtos.personnelDTOs.AddPersonnelResponseDTO;
+import com.wiredav.app.dtos.personnelDTOs.GetPersonnelListResponseDTO;
 import com.wiredav.app.dtos.personnelDTOs.PersonnelInfoDTO;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "personnel")
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
 public class Personnel {
 
     @Id
@@ -27,7 +37,7 @@ public class Personnel {
     @Column(name = "personnelEmail", nullable = false)
     private String personnelEmail;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = true)
     private String password;
 
     @OneToMany(mappedBy = "personnel", cascade = CascadeType.ALL)
@@ -52,62 +62,6 @@ public class Personnel {
 
     public Personnel() {}
 
-    public void setPersonnelId(long personnelId) {
-        this.personnelId = personnelId;
-    }
-
-    public long getPersonnelId() {
-        return personnelId;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setRole(Integer role) {
-        this.role = role;
-    }
-
-    public Integer getRole() {
-        return role;
-    }
-
-    public void setPersonnelEmail(String personnelEmail) {
-        this.personnelEmail = personnelEmail;
-    }
-
-    public String getPersonnelEmail() {
-        return personnelEmail;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setAppointments(Set<Appointments> appointments) {
-        this.appointments = appointments;
-    }
-
-    public Set<Appointments> getAppointments() {
-        return appointments;
-    }
-
     //Add toResponse method to all entities
     public PersonnelInfoDTO toResponse() {
         PersonnelInfoDTO dto = new PersonnelInfoDTO(
@@ -115,6 +69,31 @@ public class Personnel {
                 this.firstName,
                 this.lastName,
                 this.personnelEmail,
+                this.role
+        );
+
+        return dto;
+    }
+
+    //Register Personnel response
+    public AddPersonnelResponseDTO toAddPersonnelResponseDTO() {
+        AddPersonnelResponseDTO dto = new AddPersonnelResponseDTO(
+                this.personnelId,
+                this.firstName,
+                this.lastName,
+                this.personnelEmail,
+                this.role
+        );
+
+        return dto;
+    }
+
+    //Get Personnel list response
+    public GetPersonnelListResponseDTO toPersonnelListResponseDTO() {
+        GetPersonnelListResponseDTO dto = new GetPersonnelListResponseDTO(
+                this.personnelId,
+                this.firstName,
+                this.lastName,
                 this.role
         );
 
