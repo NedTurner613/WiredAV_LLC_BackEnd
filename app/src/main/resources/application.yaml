@@ -1,3 +1,22 @@
 spring:
   application:
     name: app
+  security:
+    user:
+      name: user
+      password: password
+  datasource:
+    url: ${SUPABASE_URL}
+    username: ${SUPABASE_USER}
+    password: ${SUPABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "env"
+  endpoint:
+    env:
+      show-values: "always"
