@@ -7,7 +7,9 @@ import com.wiredav.app.dtos.clientDTOs.GetClientsListResponseDTO;
 import com.wiredav.app.entities.Clients;
 import com.wiredav.app.repositories.ClientsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.ErrorResponseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,5 +74,13 @@ public class ClientService {
                     client.getLastName()));
         }
         return new GetClientsListResponseDTO(clientsListDTO);
+    }
+
+    public Clients getClientById(Long clientId) {
+        if  (clientsRepository.findById(clientId).isPresent()) {
+            return clientsRepository.findById(clientId).get();
+        } else {
+            throw new ErrorResponseException(HttpStatus.BAD_REQUEST);
+        }
     }
 }
