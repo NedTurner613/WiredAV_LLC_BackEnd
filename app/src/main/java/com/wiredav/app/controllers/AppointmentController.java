@@ -2,9 +2,6 @@ package com.wiredav.app.controllers;
 
 import com.wiredav.app.dtos.appointmentDTOs.*;
 import com.wiredav.app.services.AppointmentService;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +11,30 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/appointments")
 public class AppointmentController {
+
+    private final AppointmentService appointmentService;
+
+    public AppointmentController(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<GetAppointmentResponseDTO> getAppointment(@PathVariable("id") Long id) {
+        GetAppointmentResponseDTO appointment = appointmentService.getAppointmentById(id).toGetAppointmentResponseDTO();
+        return ResponseEntity
+                .ok()
+                .body(appointment);
+    }
+
+    @PostMapping("/")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<MakeAppointmentResponseDTO> makeAppointment(@RequestBody MakeAppointmentRequestDTO apptRequest) {
+        MakeAppointmentResponseDTO response = appointmentService.makeAppointment(apptRequest).toMakeAppointmentResponseDTO();
+        return ResponseEntity
+                .accepted()
+                .body(response);
+    }
 //
 //    @Autowired
 //    private AppointmentService appointmentService;
