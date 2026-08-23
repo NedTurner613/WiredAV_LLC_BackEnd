@@ -1,11 +1,20 @@
 package com.wiredav.app.entities;
 
+import com.wiredav.app.dtos.appointmentDTOs.*;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "appointments")
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
 public class Appointments {
 
     @Id
@@ -56,59 +65,61 @@ public class Appointments {
         return appointmentId;
     }
 
-    public void setClient(Clients client) {
-        this.client = client;
+    public CancelLinkResponseDTO toCancelLinkResponseDTO() {
+        return new CancelLinkResponseDTO(
+                this.appointmentId,
+                this.status,
+                this.client.toCancelLinkResponseClientDTO(),
+                this.timeslot.toTimeslotDTO(),
+                this.appointmentType
+        );
     }
 
-    public Clients getClient() {
-        return client;
+    public GetAppointmentResponseDTO toGetAppointmentResponseDTO() {
+        return new GetAppointmentResponseDTO(
+                this.appointmentId,
+                this.status,
+                this.personnel != null ? this.personnel.toGetAppointmentResponsePersonnelDTO() : null,
+                this.client.toGetAppointmentResponseClientDTO(),
+                this.timeslot.toTimeslotWithIdDTO(),
+                this.appointmentType,
+                this.createdAt,
+                this.updatedAt
+        );
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public GetAppointmentsListResponseEntryDTO toGetAppointmentsListResponseEntryDTO(){
+        return new GetAppointmentsListResponseEntryDTO(
+                this.appointmentId,
+                this.status,
+                this.client.toGetClientResponseDTO(),
+                this.personnel != null ? this.personnel.toPersonnelInfoDTO() : null,
+                this.timeslot.toTimeslotDTO(),
+                this.appointmentType
+        );
     }
 
-    public Integer getStatus() {
-        return status;
+    public MakeAppointmentResponseDTO toMakeAppointmentResponseDTO() {
+        return new MakeAppointmentResponseDTO(
+                this.appointmentId,
+                this.status,
+                this.personnel.toMakeAppointmentResponsePersonnelDTO(),
+                this.client.toMakeAppointmentResponseClientDTO(),
+                this.timeslot.toTimeslotWithIdDTO(),
+                this.appointmentType
+        );
     }
 
-    public void setTimeslot(Timeslot timeslot) {
-        this.timeslot = timeslot;
-    }
-
-    public Timeslot getTimeslot() {
-        return timeslot;
-    }
-
-    public void setPersonnel(Personnel personnel) {
-        this.personnel = personnel;
-    }
-
-    public Personnel getPersonnel() {
-        return personnel;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setAppointmentType(Integer appointmentType) {
-        this.appointmentType = appointmentType;
-    }
-
-    public Integer getAppointmentType() {
-        return appointmentType;
+    public ModifyAppointmentResponseDTO toModifyAppointmentResponseDTO() {
+        return new ModifyAppointmentResponseDTO(
+                this.appointmentId,
+                this.status,
+                this.client.toGetClientResponseDTO(),
+                this.personnel.toPersonnelInfoDTO(),
+                this.timeslot.toTimeslotWithIdDTO(),
+                this.appointmentType,
+                this.createdAt,
+                this.updatedAt
+        );
     }
 }

@@ -1,5 +1,10 @@
 package com.wiredav.app.entities;
 
+import com.wiredav.app.dtos.appointmentDTOs.CancelLinkResponseClientDTO;
+import com.wiredav.app.dtos.appointmentDTOs.GetAppointmentResponseClientDTO;
+import com.wiredav.app.dtos.appointmentDTOs.MakeAppointmentResponseClientDTO;
+import com.wiredav.app.dtos.appointmentDTOs.ModifyAppointmentResponseClientDTO;
+import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,5 +46,61 @@ public class Clients {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
+    }
+
+    public CancelLinkResponseClientDTO toCancelLinkResponseClientDTO() {
+        return new CancelLinkResponseClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName,
+                this.phoneNumber,
+                this.emailAddress
+        );
+    }
+
+    public GetAppointmentResponseClientDTO toGetAppointmentResponseClientDTO() {
+        return new GetAppointmentResponseClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName
+        );
+    }
+
+    public GetClientResponseDTO toGetClientResponseDTO() {
+        return new GetClientResponseDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName,
+                this.emailAddress,
+                this.phoneNumber
+        );
+    }
+
+    public MakeAppointmentResponseClientDTO toMakeAppointmentResponseClientDTO() {
+        return new MakeAppointmentResponseClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName,
+                this.phoneNumber,
+                this.emailAddress
+        );
+    }
+
+    public MakeAppointmentResponseClientDTO toMakeAppointmentResponseClientDTOWithoutEmail() {
+        return new MakeAppointmentResponseClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName,
+                this.phoneNumber,
+                this.emailAddress
+        );
+    }
+
+    public ModifyAppointmentResponseClientDTO toModifyAppointmentResponseClientDTO() {
+        return new ModifyAppointmentResponseClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName
+        );
     }
 }

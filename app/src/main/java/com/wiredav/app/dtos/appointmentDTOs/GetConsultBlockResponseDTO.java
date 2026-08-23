@@ -1,16 +1,11 @@
 package com.wiredav.app.dtos.appointmentDTOs;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class GetConsultBlockResponseDTO {
-    private List<TimeslotDTO> timeslots;
+public record GetConsultBlockResponseDTO(
+    List<TimeslotDTO> timeslots
+) {
+    public GetConsultBlockResponseDTO(List<TimeslotDTO> timeslots) {
+        this.timeslots = timeslots;
+    }
 }

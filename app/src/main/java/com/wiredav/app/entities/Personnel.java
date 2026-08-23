@@ -1,5 +1,7 @@
 package com.wiredav.app.entities;
 
+import com.wiredav.app.dtos.appointmentDTOs.GetAppointmentResponsePersonnelDTO;
+import com.wiredav.app.dtos.appointmentDTOs.MakeAppointmentResponsePersonnelDTO;
 import com.wiredav.app.dtos.personnelDTOs.PersonnelInfoDTO;
 import jakarta.persistence.*;
 
@@ -109,7 +111,7 @@ public class Personnel {
     }
 
     //Add toResponse method to all entities
-    public PersonnelInfoDTO toResponse() {
+    public PersonnelInfoDTO toPersonnelInfoDTO() {
         PersonnelInfoDTO dto = new PersonnelInfoDTO(
                 this.personnelId,
                 this.firstName,
@@ -119,5 +121,22 @@ public class Personnel {
         );
 
         return dto;
+    }
+
+    public GetAppointmentResponsePersonnelDTO toGetAppointmentResponsePersonnelDTO() {
+        return new GetAppointmentResponsePersonnelDTO(
+                this.personnelId,
+                this.firstName,
+                this.lastName,
+                this.role
+        );
+    }
+
+    public MakeAppointmentResponsePersonnelDTO toMakeAppointmentResponsePersonnelDTO() {
+        return new MakeAppointmentResponsePersonnelDTO(
+                this.personnelId,
+                this.firstName,
+                this.lastName
+        );
     }
 }
