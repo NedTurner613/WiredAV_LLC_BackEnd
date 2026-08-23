@@ -1,6 +1,7 @@
 package com.wiredav.app.controllers;
 
 import com.wiredav.app.dtos.appointmentDTOs.*;
+import com.wiredav.app.entities.Appointments;
 import com.wiredav.app.services.AppointmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,91 +20,40 @@ public class AppointmentController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<GetAppointmentResponseDTO> getAppointment(@PathVariable("id") Long id) {
-        GetAppointmentResponseDTO appointment = appointmentService.getAppointmentById(id).toGetAppointmentResponseDTO();
+        var appointment = appointmentService.getAppointmentById(id).toGetAppointmentResponseDTO();
         return ResponseEntity
-                .ok()
+                .accepted()
                 .body(appointment);
     }
 
-    @PostMapping("/")
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<GetAppointmentsListResponseDTO> getAppointmentsList(@RequestBody GetAppointmentsListRequestDTO request){
+        var appointmentsList = Appointments.toGetAppointmentsListResponseDTO(appointmentService.getAppointmentsByPersonnelAndTimeframe(request));
+        return ResponseEntity
+                .accepted()
+                .body(appointmentsList);
+    }
+
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MakeAppointmentResponseDTO> makeAppointment(@RequestBody MakeAppointmentRequestDTO apptRequest) {
-        MakeAppointmentResponseDTO response = appointmentService.makeAppointment(apptRequest).toMakeAppointmentResponseDTO();
+        var response = appointmentService.makeAppointment(apptRequest).toMakeAppointmentResponseDTO();
         return ResponseEntity
                 .accepted()
                 .body(response);
     }
-//
-//    @Autowired
-//    private AppointmentService appointmentService;
 
-//    @GetMapping("/appointments")
-//    public ResponseEntity<GetAppointmentsResponseDTO> GetAppointments(){
-//        GetAppointmentsResponseDTO list = appointmentService.GetAppointments();
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(list);
-//    }
-//
-//    @GetMapping("/appointment/{id}")
-//    public ResponseEntity<GetAppointmentResponseDTO> GetAppointment(@PathVariable("id") Long id){
-//        GetAppointmentResponseDTO appointment = appointmentService.GetAppointment(id);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(appointment);
-//    }
-//
-//    @PostMapping("/appointment")
-//    public ResponseEntity<MakeAppointmentResponseDTO> MakeAppointment(@RequestBody MakeAppointmentRequestDTO apptRequest){
-//        MakeAppointmentResponseDTO response = appointmentService.MakeAppointment(apptRequest);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(response);
-//    }
-//
-//    @PutMapping("/appointment")
-//    public ResponseEntity<ModifyAppointmentResponseDTO> ModifyAppointment(@RequestBody ModifyAppointmentRequestDTO modifyRequest){
-//        ModifyAppointmentResponseDTO newApptInfo = appointmentService.ModifyAppointment(modifyRequest);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(newApptInfo);
-//    }
-//
-//
-//
-//    //region Client Side Methods
-//    @GetMapping("/consult/{date}")
-//    public ResponseEntity<Void> GetConsultBlock(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .build();
-//    }
-//
-//    @PostMapping("/consult")
-//    public ResponseEntity<Void> RequestConsult(@RequestBody RequestConsultRequestDTO consultRequest){
-//        appointmentService.RequestConsult(consultRequest);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .build();
-//    }
-//
-//    @PutMapping("/consult/{id}")
-//    public ResponseEntity<CancelLinkResponseDTO> CancelLink(@PathVariable("id") Long id){
-//        CancelLinkResponseDTO apptDetails = appointmentService.CancelLink(id);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(apptDetails);
-//    }
-//
-//    @DeleteMapping("/consult/{id}")
-//    public ResponseEntity<Void> CancelConsult(@PathVariable("id") Long id){
-//        appointmentService.CancelConsult(id);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .build();
-//    }
+    @PutMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ModifyAppointmentResponseDTO> modifyAppointment(@RequestBody ModifyAppointmentRequestDTO request){
+        var response = appointmentService.modifyAppointment(request).toModifyAppointmentResponseDTO();
+        return ResponseEntity
+                .accepted()
+                .body(response);
+    }
 
-    //endregion
+
 
 
 }

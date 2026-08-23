@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "appointments")
@@ -55,7 +56,8 @@ public class Appointments {
         //Create entity functions to set updatedAt and createdAt values
     }
 
-    public Appointments() {}
+    public Appointments() {
+    }
 
     public void setAppointmentId(long appointmentId) {
         this.appointmentId = appointmentId;
@@ -88,7 +90,7 @@ public class Appointments {
         );
     }
 
-    public GetAppointmentsListResponseEntryDTO toGetAppointmentsListResponseEntryDTO(){
+    public GetAppointmentsListResponseEntryDTO toGetAppointmentsListResponseEntryDTO() {
         return new GetAppointmentsListResponseEntryDTO(
                 this.appointmentId,
                 this.status,
@@ -97,6 +99,13 @@ public class Appointments {
                 this.timeslot.toTimeslotDTO(),
                 this.appointmentType
         );
+    }
+
+    public static GetAppointmentsListResponseDTO toGetAppointmentsListResponseDTO(Set<Appointments> appointments) {
+        Set<GetAppointmentsListResponseEntryDTO> appointmentEntries = appointments.stream()
+                .map(Appointments::toGetAppointmentsListResponseEntryDTO)
+                .collect(java.util.stream.Collectors.toSet());
+        return new GetAppointmentsListResponseDTO(appointmentEntries);
     }
 
     public MakeAppointmentResponseDTO toMakeAppointmentResponseDTO() {
@@ -122,4 +131,5 @@ public class Appointments {
                 this.updatedAt
         );
     }
+
 }
