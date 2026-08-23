@@ -9,6 +9,9 @@ import com.wiredav.app.repositories.ClientsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ClientService {
@@ -34,18 +37,40 @@ public class ClientService {
     *
     *     Returns: Client object with generated client ID
     *     Throws: ClientException if the client doesn't provide an email and phone number.
-    *     */
-
+    *
+    *  2. Get Clients
+    *     Shows the list of all clients
+    *
+    *     Method Signature: public GetClientsListResponseDTO getClients()
+    *
+    *     Parameters:
+    *     None
+    *
+    *     Returns: List of Client objects with their clientId, firstName, and LastName
+    *
+    */
     private final ClientsRepository clientsRepository;
 
     public Clients createClient(AddClientRequestDTO request) {
-      Clients newClient = Clients.builder()
-              .firstName(request.firstName())
-              .lastName(request.lastName())
-              .emailAddress(request.email())
-              .phoneNumber(request.phoneNumber())
-              .build();
+        Clients newClient = Clients.builder()
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .emailAddress(request.email())
+                .phoneNumber(request.phoneNumber())
+                .build();
 
-      return clientsRepository.save(newClient);
+        return clientsRepository.save(newClient);
+    }
+
+    public GetClientsListResponseDTO getClients() {
+        var clients = clientsRepository.findAll();
+        List<GetClientsListResponseDTO.GetClientsListEntryResponseDTO> clientsListDTO = new ArrayList<>();
+        for (Clients client : clients) {
+            clientsListDTO.add(new GetClientsListResponseDTO.GetClientsListEntryResponseDTO(
+                    client.getClientId(),
+                    client.getFirstName(),
+                    client.getLastName()));
+        }
+        return new GetClientsListResponseDTO(clientsListDTO);
     }
 }
