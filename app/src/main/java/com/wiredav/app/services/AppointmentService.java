@@ -2,6 +2,7 @@ package com.wiredav.app.services;
 
 import com.wiredav.app.dtos.appointmentDTOs.*;
 import com.wiredav.app.entities.Appointments;
+import com.wiredav.app.entities.Clients;
 import com.wiredav.app.entities.Timeslot;
 import com.wiredav.app.repositories.AppointmentsRepository;
 import com.wiredav.app.repositories.ClientsRepository;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -23,8 +23,6 @@ import java.util.Set;
 public class AppointmentService {
 
     private final AppointmentsRepository appointmentsRepository;
-    private final ClientService clientService;
-    private final PersonnelService personnelService;
     private final TimeslotService timeslotService;
     private final ClientsRepository clientsRepository;
     private final PersonnelRepository personnelRepository;
@@ -34,7 +32,7 @@ public class AppointmentService {
     }
 
     public Set<Appointments> getAppointmentsByPersonnelAndTimeframe(GetAppointmentsListRequestDTO request){
-        return appointmentsRepository.findAppointmentsByPersonnelAndTimeframe(request.personnelIds(), request.timeFrame().startTime(), request.timeFrame().endTime());
+        return appointmentsRepository.findAppointmentsByPersonnelAndTimeframe(request.personnelIds(), request.timeFrame().startTime(), request.timeFrame().endTime()).orElse(null);
     }
 
     public Appointments makeAppointment(MakeAppointmentRequestDTO apptRequest) {
@@ -76,37 +74,64 @@ public class AppointmentService {
     //CONSULTATION LOGIC
 
     public GetConsultBlockResponseDTO getConsultBlock(LocalDate date){
-        List<TimeslotDTO> timeslots = new ArrayList<TimeslotDTO>();
+        List<TimeslotDTO> unavailableTimeslots = new ArrayList<>();
         for(int h=9; h<18;h++){
-            if(timeslotService.checkTimeslotAvailability(date.atTime(h, 0), date.atTime(h+1, 0))) {
-                timeslots.add(new TimeslotDTO(date.atTime(h, 0), date.atTime(h+1, 0)));
+            TimeslotDTO timeslot = new TimeslotDTO(date.atTime(h, 0), date.atTime(h+1, 0));
+            // if timeslot is unavailable, that timeslot will be added to the unavailableTimeslots object
+            if(!timeslotService.isTimeslotAvailable(timeslot)) {
+                unavailableTimeslots.add(new TimeslotDTO(date.atTime(h, 0), date.atTime(h+1, 0)));
             }
         }
-        return new GetConsultBlockResponseDTO(timeslots);
+        return new GetConsultBlockResponseDTO(unavailableTimeslots);
     }
 
     public void requestConsultation(RequestConsultRequestDTO request){
+        Timeslot timeslot = Timeslot.builder()
+                .startTime(request.timeslot().startTime())
+                .endTime(request.timeslot().endTime())
+                .build();
+        //first check if the timeslot is available
+        if(timeslotService.isTimeslotAvailable(timeslot)) {
+            //check if a client with that email already exists
+            Clients client = clientsRepository.findByEmailAddress(request.clientInfo().email()).orElse(null);
+            if(client == null) {
+                client = Clients.builder()
+                        .firstName(request.clientInfo().firstName())
+                        .lastName(request.clientInfo().lastName())
+                        .emailAddress(request.clientInfo().email())
+                        .phoneNumber(request.clientInfo().phoneNumber())
+                        .build();
+            }else{
+                client.setFirstName(request.clientInfo().firstName());
+                client.setLastName(request.clientInfo().lastName());
+                client.setPhoneNumber(request.clientInfo().phoneNumber());
+            }
+            //create the new client/update the extant client with new info
+            client = clientsRepository.save(client);
+            Appointments appointment = Appointments.builder()
+                    .client(client)
+                    .personnel(null)
+                    .timeslot(timeslot)
+                    .status(1)
+                    .appointmentType(1)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+            //schedule the appointment
+            appointmentsRepository.save(appointment);
+        }
 
     }
 
-//
-//
-//    //region Client Side Logic
-//
-//    public GetConsultBlockResponseDTO GetConsultBlock(LocalDate date){
-//        return new GetConsultBlockResponseDTO();
-//    }
-//
-//    public void RequestConsult(RequestConsultRequestDTO consultRequest){
-//    }
-//
-//    public CancelLinkResponseDTO CancelLink(Long apptId){
-//        return new CancelLinkResponseDTO();
-//    }
-//
-//    public void CancelConsult(Long apptId){
-//
-//    }
-//
-//    //
+    public Appointments cancelConsultationLink(Long apptId){
+        return appointmentsRepository.findById(apptId).orElse(null);
+    }
+
+    public void cancelConsultation(Long apptId){
+        var appointment = appointmentsRepository.findById(apptId).orElse(null);
+        if(appointment != null){
+            appointment.setStatus(3);
+            appointmentsRepository.save(appointment);
+        }
+    }
+
 }

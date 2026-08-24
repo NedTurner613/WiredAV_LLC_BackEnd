@@ -4,5 +4,5 @@ import com.wiredav.app.dtos.clientDTOs.AddClientRequestDTO;
 
 public record RequestConsultRequestDTO(
     AddClientRequestDTO clientInfo,
-    TimeslotDTO timeslotDTO
+    TimeslotDTO timeslot
 ) {}

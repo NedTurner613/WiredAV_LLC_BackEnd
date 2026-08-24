@@ -6,13 +6,13 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 public interface TimeslotRepository extends CrudRepository<Timeslot, Long> {
 
     @Query("SELECT t FROM Timeslot t WHERE t.appointments.appointmentId = :id")
-    Timeslot findByAppointmentsId(Long id);
+    Optional<Timeslot> findByAppointmentsId(Long id);
 
     @Query("SELECT t FROM Timeslot t WHERE t.startTime = :startTime")
-    List<Timeslot> findAllByStartTime(LocalDateTime startTime);
+    Optional<List<Timeslot>> findAllByStartTime(LocalDateTime startTime);
 }

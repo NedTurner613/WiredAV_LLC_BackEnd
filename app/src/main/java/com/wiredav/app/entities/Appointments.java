@@ -29,6 +29,11 @@ public class Appointments {
 
     @Column(name = "status", nullable = false)
     private Integer status;
+    /*
+        1: Requested
+        2: Open
+        3: Closed
+     */
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "timeslotId", referencedColumnName = "timeslotId")
@@ -46,6 +51,9 @@ public class Appointments {
 
     @Column(name = "appointmentType", nullable = false)
     private Integer appointmentType;
+    /*
+        1: Consultation
+     */
 
     public Appointments(Integer status, Timeslot timeslotId, Integer appointmentType, Personnel personnel, Clients client) {
         this.status = status;
@@ -57,14 +65,6 @@ public class Appointments {
     }
 
     public Appointments() {
-    }
-
-    public void setAppointmentId(long appointmentId) {
-        this.appointmentId = appointmentId;
-    }
-
-    public long getAppointmentId() {
-        return appointmentId;
     }
 
     public CancelLinkResponseDTO toCancelLinkResponseDTO() {
