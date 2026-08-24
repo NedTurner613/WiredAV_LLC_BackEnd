@@ -4,10 +4,13 @@ import com.wiredav.app.dtos.clientDTOs.AddClientRequestDTO;
 import com.wiredav.app.dtos.clientDTOs.AddClientResponseDTO;
 import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import com.wiredav.app.dtos.clientDTOs.GetClientsListResponseDTO;
+import com.wiredav.app.entities.Clients;
 import com.wiredav.app.services.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -27,15 +30,16 @@ public class ClientController {
         return ResponseEntity.ok().body(createClient.toAddClientResponseDTO());
     }
 
-    @GetMapping("/clients")
+    @GetMapping()
     public ResponseEntity<GetClientsListResponseDTO> getAllClients() {
-        GetClientsListResponseDTO response = clientService.getClients();
+        List<Clients> clients = clientService.getClients();
+        GetClientsListResponseDTO response = new GetClientsListResponseDTO(clients);
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/clients/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<GetClientResponseDTO> getClientById(@PathVariable Long id) {
         var response = clientService.getClientById(id);
-        return ResponseEntity.ok(new GetClientResponseDTO(response));
+        return ResponseEntity.ok().body(response.toGetClientByIdResponseDTO());
     }
 }

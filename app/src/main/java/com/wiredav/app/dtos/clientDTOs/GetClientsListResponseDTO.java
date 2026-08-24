@@ -1,14 +1,11 @@
 package com.wiredav.app.dtos.clientDTOs;
 
+import com.wiredav.app.entities.Clients;
+
 import java.util.List;
 
 public record GetClientsListResponseDTO (
-     List<GetClientsListEntryResponseDTO> clients
+     List<Clients> clients
 ) {
-    public record GetClientsListEntryResponseDTO(
-            Long clientId,
-            String firstName,
-            String lastName
-    ) {
+
     }
-}
