@@ -12,18 +12,34 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/v1/clients")
 public class ClientController {
+
     private final ClientService clientService;
 
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
     }
 
-    @PostMapping()
-    public ResponseEntity<Clients> addClient(@RequestBody AddClientRequestDTO request) {
-        Clients createdClient = clientService.createClient(request);
-        return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
+    @PostMapping("/addClient")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<AddClientResponseDTO> addClient(@RequestBody AddClientRequestDTO request) {
+        var createClient = clientService.createClient(request);
+        return ResponseEntity.ok().body(createClient.toAddClientResponseDTO());
+    }
+
+    @GetMapping()
+    public ResponseEntity<GetClientsListResponseDTO> getAllClients() {
+        List<Clients> clients = clientService.getClients();
+        GetClientsListResponseDTO response = new GetClientsListResponseDTO(clients);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GetClientResponseDTO> getClientById(@PathVariable Long id) {
+        var response = clientService.getClientById(id);
+        return ResponseEntity.ok().body(response.toGetClientByIdResponseDTO());
     }
 }

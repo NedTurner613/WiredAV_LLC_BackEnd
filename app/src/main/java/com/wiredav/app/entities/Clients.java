@@ -1,12 +1,12 @@
 package com.wiredav.app.entities;
 
+import com.wiredav.app.dtos.clientDTOs.AddClientResponseDTO;
+import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
-import java.util.Set;
-
-@Entity
+import java.util.Set;@Entity
 @Table(name = "clients")
 @Getter
 @Setter
@@ -41,5 +41,26 @@ public class Clients {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.emailAddress = emailAddress;
+    }
+
+    // Add new Client response
+    public AddClientResponseDTO toAddClientResponseDTO() {
+        return new AddClientResponseDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName,
+                this.emailAddress,
+                this.phoneNumber
+        );
+    }
+
+    public GetClientResponseDTO toGetClientByIdResponseDTO () {
+        return new GetClientResponseDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName,
+                this.emailAddress,
+                this.phoneNumber
+        );
     }
 }

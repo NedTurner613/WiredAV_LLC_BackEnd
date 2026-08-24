@@ -1,13 +1,14 @@
 package com.wiredav.app.services;
 
 import com.wiredav.app.dtos.clientDTOs.AddClientRequestDTO;
-import com.wiredav.app.dtos.clientDTOs.AddClientResponseDTO;
-import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
-import com.wiredav.app.dtos.clientDTOs.GetClientsListResponseDTO;
 import com.wiredav.app.entities.Clients;
 import com.wiredav.app.repositories.ClientsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.ErrorResponseException;
+
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,18 +35,40 @@ public class ClientService {
     *
     *     Returns: Client object with generated client ID
     *     Throws: ClientException if the client doesn't provide an email and phone number.
-    *     */
-
+    *
+    *  2. Get Clients
+    *     Shows the list of all clients
+    *
+    *     Method Signature: public GetClientsListResponseDTO getClients()
+    *
+    *     Parameters:
+    *     None
+    *
+    *     Returns: List of Client objects with their clientId, firstName, and LastName
+    *
+    */
     private final ClientsRepository clientsRepository;
 
     public Clients createClient(AddClientRequestDTO request) {
-      Clients newClient = Clients.builder()
-              .firstName(request.firstName())
-              .lastName(request.lastName())
-              .emailAddress(request.email())
-              .phoneNumber(request.phoneNumber())
-              .build();
+        Clients newClient = Clients.builder()
+                .firstName(request.firstName())
+                .lastName(request.lastName())
+                .emailAddress(request.email())
+                .phoneNumber(request.phoneNumber())
+                .build();
 
-      return clientsRepository.save(newClient);
+        return clientsRepository.save(newClient);
+    }
+
+    public List<Clients> getClients() {
+        return (List<Clients>) clientsRepository.findAll();
+    }
+
+    public Clients getClientById(Long clientId) {
+        if  (clientsRepository.findById(clientId).isPresent()) {
+            return clientsRepository.findById(clientId).get();
+        } else {
+            throw new ErrorResponseException(HttpStatus.BAD_REQUEST);
+        }
     }
 }
