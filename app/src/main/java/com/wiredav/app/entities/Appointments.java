@@ -10,31 +10,31 @@ public class Appointments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "appointmentId", nullable = false)
+    @Column(name = "appointment_id", nullable = false)
     private long appointmentId;
 
     @ManyToOne
-    @JoinColumn(name = "clientId", nullable = false)
+    @JoinColumn(name = "client_id", nullable = false)
     private Clients client;
 
     @Column(name = "status", nullable = false)
     private Integer status;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "timeslotId", referencedColumnName = "timeslotId")
+    @JoinColumn(name = "timeslot_id", referencedColumnName = "timeslot_id")
     private Timeslot timeslot;
 
     @ManyToOne
-    @JoinColumn(name = "personnelId", nullable = true)
+    @JoinColumn(name = "personnel_id", nullable = true)
     private Personnel personnel;
 
-    @Column(name = "createdAt", nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updatedAt", nullable = true)
+    @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
 
-    @Column(name = "appointmentType", nullable = false)
+    @Column(name = "appointment_type", nullable = false)
     private Integer appointmentType;
 
     public Appointments(Integer status, Timeslot timeslotId, Integer appointmentType, Personnel personnel, Clients client) {

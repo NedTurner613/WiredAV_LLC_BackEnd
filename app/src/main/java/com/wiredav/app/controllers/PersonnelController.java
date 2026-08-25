@@ -62,8 +62,8 @@ public class PersonnelController {
 //                .body(updatedPersonnel);
 //    }
 //
-    @GetMapping("/{personnelId}")
-    public ResponseEntity<PersonnelInfoDTO> GetPersonnel(@PathVariable("personnelId") Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<PersonnelInfoDTO> GetPersonnel(@PathVariable Long id){
         var personnel = personnelService.getPersonnel(id).toResponse();
         return ResponseEntity.ok(personnel);
     }
