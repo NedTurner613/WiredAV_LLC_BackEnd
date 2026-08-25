@@ -3,7 +3,6 @@ package com.wiredav.app.entities;
 import com.wiredav.app.dtos.clientDTOs.AddClientResponseDTO;
 import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import com.wiredav.app.dtos.appointmentDTOs.*;
-import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -120,6 +119,14 @@ public class Clients {
                 this.lastName,
                 this.emailAddress,
                 this.phoneNumber
+        );
+    }
+
+    public GetAppointmentsListResponseEntryClientDTO toGetAppointmentsListResponseEntryClientDTO(){
+        return new GetAppointmentsListResponseEntryClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName
         );
     }
 }

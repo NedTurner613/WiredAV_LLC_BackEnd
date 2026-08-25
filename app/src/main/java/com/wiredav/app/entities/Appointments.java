@@ -94,9 +94,9 @@ public class Appointments {
         return new GetAppointmentsListResponseEntryDTO(
                 this.appointmentId,
                 this.status,
-                this.client.toGetClientResponseDTO(),
-                this.personnel != null ? this.personnel.toResponse() : null,
-                this.timeslot.toTimeslotDTO(),
+                this.client.toGetAppointmentsListResponseEntryClientDTO(),
+                this.personnel != null ? this.personnel.toGetAppointmentsListResponseEntryPersonnelDTO() : null,
+                this.timeslot.toTimeslotWithIdDTO(),
                 this.appointmentType
         );
     }
