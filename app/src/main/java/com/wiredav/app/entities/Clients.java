@@ -2,11 +2,14 @@ package com.wiredav.app.entities;
 
 import com.wiredav.app.dtos.clientDTOs.AddClientResponseDTO;
 import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
+import com.wiredav.app.dtos.appointmentDTOs.*;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
-import java.util.Set;@Entity
+import java.util.Set;
+
+@Entity
 @Table(name = "clients")
 @Getter
 @Setter
@@ -43,6 +46,61 @@ public class Clients {
         this.emailAddress = emailAddress;
     }
 
+    public CancelLinkResponseClientDTO toCancelLinkResponseClientDTO() {
+        return new CancelLinkResponseClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName,
+                this.phoneNumber,
+                this.emailAddress
+        );
+    }
+
+    public GetAppointmentResponseClientDTO toGetAppointmentResponseClientDTO() {
+        return new GetAppointmentResponseClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName
+        );
+    }
+
+    public GetClientResponseDTO toGetClientResponseDTO() {
+        return new GetClientResponseDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName,
+                this.emailAddress,
+                this.phoneNumber
+        );
+    }
+
+    public MakeAppointmentResponseClientDTO toMakeAppointmentResponseClientDTO() {
+        return new MakeAppointmentResponseClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName,
+                this.phoneNumber,
+                this.emailAddress
+        );
+    }
+
+    public ModifyAppointmentResponseClientDTO toModifyAppointmentResponseClientDTO() {
+        return new ModifyAppointmentResponseClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName
+        );
+    }
+
+    public RequestConsultClientDTO toRequestConsultClientResponseDTO(){
+        return new RequestConsultClientDTO(
+                this.firstName,
+                this.lastName,
+                this.emailAddress,
+                this.phoneNumber
+        );
+    }
+
     // Add new Client response
     public AddClientResponseDTO toAddClientResponseDTO() {
         return new AddClientResponseDTO(
@@ -61,6 +119,14 @@ public class Clients {
                 this.lastName,
                 this.emailAddress,
                 this.phoneNumber
+        );
+    }
+
+    public GetAppointmentsListResponseEntryClientDTO toGetAppointmentsListResponseEntryClientDTO(){
+        return new GetAppointmentsListResponseEntryClientDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName
         );
     }
 }

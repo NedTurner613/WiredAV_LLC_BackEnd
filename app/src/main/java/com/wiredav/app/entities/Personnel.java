@@ -1,5 +1,8 @@
 package com.wiredav.app.entities;
 
+import com.wiredav.app.dtos.appointmentDTOs.GetAppointmentResponsePersonnelDTO;
+import com.wiredav.app.dtos.appointmentDTOs.GetAppointmentsListResponseEntryPersonnelDTO;
+import com.wiredav.app.dtos.appointmentDTOs.MakeAppointmentResponsePersonnelDTO;
 import com.wiredav.app.dtos.personnelDTOs.AddPersonnelResponseDTO;
 import com.wiredav.app.dtos.personnelDTOs.GetPersonnelListResponseDTO;
 import com.wiredav.app.dtos.personnelDTOs.PersonnelInfoDTO;
@@ -98,5 +101,30 @@ public class Personnel {
         );
 
         return dto;
+    }
+
+    public GetAppointmentResponsePersonnelDTO toGetAppointmentResponsePersonnelDTO() {
+        return new GetAppointmentResponsePersonnelDTO(
+                this.personnelId,
+                this.firstName,
+                this.lastName,
+                this.role
+        );
+    }
+
+    public MakeAppointmentResponsePersonnelDTO toMakeAppointmentResponsePersonnelDTO() {
+        return new MakeAppointmentResponsePersonnelDTO(
+                this.personnelId,
+                this.firstName,
+                this.lastName
+        );
+    }
+
+    public GetAppointmentsListResponseEntryPersonnelDTO toGetAppointmentsListResponseEntryPersonnelDTO(){
+        return new GetAppointmentsListResponseEntryPersonnelDTO(
+                this.personnelId,
+                this.firstName,
+                this.lastName
+        );
     }
 }

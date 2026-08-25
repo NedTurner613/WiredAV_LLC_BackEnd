@@ -1,11 +1,21 @@
 package com.wiredav.app.entities;
 
+import com.wiredav.app.dtos.appointmentDTOs.*;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "appointments")
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
 public class Appointments {
 
     @Id
@@ -19,6 +29,11 @@ public class Appointments {
 
     @Column(name = "status", nullable = false)
     private Integer status;
+    /*
+        1: Requested
+        2: Open
+        3: Closed
+     */
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "timeslot_id", referencedColumnName = "timeslot_id")
@@ -36,6 +51,9 @@ public class Appointments {
 
     @Column(name = "appointment_type", nullable = false)
     private Integer appointmentType;
+    /*
+        1: Consultation
+     */
 
     public Appointments(Integer status, Timeslot timeslotId, Integer appointmentType, Personnel personnel, Clients client) {
         this.status = status;
@@ -46,69 +64,79 @@ public class Appointments {
         //Create entity functions to set updatedAt and createdAt values
     }
 
-    public Appointments() {}
-
-    public void setAppointmentId(long appointmentId) {
-        this.appointmentId = appointmentId;
+    public Appointments() {
     }
 
-    public long getAppointmentId() {
-        return appointmentId;
+    public CancelLinkResponseDTO toCancelLinkResponseDTO() {
+        return new CancelLinkResponseDTO(
+                this.appointmentId,
+                this.status,
+                this.client.toCancelLinkResponseClientDTO(),
+                this.timeslot.toTimeslotDTO(),
+                this.appointmentType
+        );
     }
 
-    public void setClient(Clients client) {
-        this.client = client;
+    public GetAppointmentResponseDTO toGetAppointmentResponseDTO() {
+        return new GetAppointmentResponseDTO(
+                this.appointmentId,
+                this.status,
+                this.personnel != null ? this.personnel.toGetAppointmentResponsePersonnelDTO() : null,
+                this.client.toGetAppointmentResponseClientDTO(),
+                this.timeslot.toTimeslotWithIdDTO(),
+                this.appointmentType,
+                this.createdAt,
+                this.updatedAt
+        );
     }
 
-    public Clients getClient() {
-        return client;
+    public GetAppointmentsListResponseEntryDTO toGetAppointmentsListResponseEntryDTO() {
+        return new GetAppointmentsListResponseEntryDTO(
+                this.appointmentId,
+                this.status,
+                this.client.toGetAppointmentsListResponseEntryClientDTO(),
+                this.personnel != null ? this.personnel.toGetAppointmentsListResponseEntryPersonnelDTO() : null,
+                this.timeslot.toTimeslotWithIdDTO(),
+                this.appointmentType
+        );
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public static GetAppointmentsListResponseDTO toGetAppointmentsListResponseDTO(Set<Appointments> appointments) {
+        Set<GetAppointmentsListResponseEntryDTO> appointmentEntries = appointments.stream()
+                .map(Appointments::toGetAppointmentsListResponseEntryDTO)
+                .collect(java.util.stream.Collectors.toSet());
+        return new GetAppointmentsListResponseDTO(appointmentEntries);
     }
 
-    public Integer getStatus() {
-        return status;
+    public MakeAppointmentResponseDTO toMakeAppointmentResponseDTO() {
+        return new MakeAppointmentResponseDTO(
+                this.appointmentId,
+                this.status,
+                this.personnel.toMakeAppointmentResponsePersonnelDTO(),
+                this.client.toMakeAppointmentResponseClientDTO(),
+                this.timeslot.toTimeslotWithIdDTO(),
+                this.appointmentType
+        );
     }
 
-    public void setTimeslot(Timeslot timeslot) {
-        this.timeslot = timeslot;
+    public ModifyAppointmentResponseDTO toModifyAppointmentResponseDTO() {
+        return new ModifyAppointmentResponseDTO(
+                this.appointmentId,
+                this.status,
+                this.client.toModifyAppointmentResponseClientDTO(),
+                this.personnel.toResponse(),
+                this.timeslot.toTimeslotWithIdDTO(),
+                this.appointmentType,
+                this.createdAt,
+                this.updatedAt
+        );
     }
 
-    public Timeslot getTimeslot() {
-        return timeslot;
+    public RequestConsultResponseDTO toRequestConsultResponseDTO(){
+        return new RequestConsultResponseDTO(
+                this.client.toRequestConsultClientResponseDTO(),
+                this.timeslot.toTimeslotDTO()
+        );
     }
 
-    public void setPersonnel(Personnel personnel) {
-        this.personnel = personnel;
-    }
-
-    public Personnel getPersonnel() {
-        return personnel;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setAppointmentType(Integer appointmentType) {
-        this.appointmentType = appointmentType;
-    }
-
-    public Integer getAppointmentType() {
-        return appointmentType;
-    }
 }
