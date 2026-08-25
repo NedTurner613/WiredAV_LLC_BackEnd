@@ -95,7 +95,7 @@ public class Appointments {
                 this.appointmentId,
                 this.status,
                 this.client.toGetClientResponseDTO(),
-                this.personnel != null ? this.personnel.toPersonnelInfoDTO() : null,
+                this.personnel != null ? this.personnel.toResponse() : null,
                 this.timeslot.toTimeslotDTO(),
                 this.appointmentType
         );
@@ -124,7 +124,7 @@ public class Appointments {
                 this.appointmentId,
                 this.status,
                 this.client.toModifyAppointmentResponseClientDTO(),
-                this.personnel.toPersonnelInfoDTO(),
+                this.personnel.toResponse(),
                 this.timeslot.toTimeslotWithIdDTO(),
                 this.appointmentType,
                 this.createdAt,

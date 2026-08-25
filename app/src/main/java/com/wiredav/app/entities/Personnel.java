@@ -65,7 +65,7 @@ public class Personnel {
     public Personnel() {}
 
     //Add toResponse method to all entities
-    public PersonnelInfoDTO toPersonnelInfoDTO() {
+    public PersonnelInfoDTO toResponse() {
         PersonnelInfoDTO dto = new PersonnelInfoDTO(
                 this.personnelId,
                 this.firstName,
