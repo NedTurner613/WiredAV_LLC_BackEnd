@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -64,6 +65,7 @@ public class AppointmentService {
                 .personnel(personnelRepository.findById(request.personnelId()).orElse(null))
                 .timeslot(timeslot)
                 .appointmentType(request.apptType())
+                .createdAt(request.createdAt())
                 .updatedAt(LocalDateTime.now())
                 .build();
         return appointmentsRepository.save(appointment);
@@ -76,7 +78,8 @@ public class AppointmentService {
     public GetConsultBlockResponseDTO getConsultBlock(LocalDate date){
         List<TimeslotDTO> unavailableTimeslots = new ArrayList<>();
         for(int h=9; h<18;h++){
-            TimeslotDTO timeslot = new TimeslotDTO(date.atTime(h, 0), date.atTime(h+1, 0));
+//            TimeslotDTO timeslot = new TimeslotDTO(date.atTime(h, 0,0,0), date.atTime(h+1, 0,0,0));
+            TimeslotDTO timeslot = new TimeslotDTO(LocalDateTime.of(date, LocalTime.of(h, 0,0)), date.atTime(h+1, 0,0,0));
             // if timeslot is unavailable, that timeslot will be added to the unavailableTimeslots object
             if(!timeslotService.isTimeslotAvailable(timeslot)) {
                 unavailableTimeslots.add(new TimeslotDTO(date.atTime(h, 0), date.atTime(h+1, 0)));
@@ -85,7 +88,7 @@ public class AppointmentService {
         return new GetConsultBlockResponseDTO(unavailableTimeslots);
     }
 
-    public void requestConsultation(RequestConsultRequestDTO request){
+    public Appointments requestConsultation(RequestConsultRequestDTO request){
         Timeslot timeslot = Timeslot.builder()
                 .startTime(request.timeslot().startTime())
                 .endTime(request.timeslot().endTime())
@@ -117,9 +120,9 @@ public class AppointmentService {
                     .createdAt(LocalDateTime.now())
                     .build();
             //schedule the appointment
-            appointmentsRepository.save(appointment);
+            return appointmentsRepository.save(appointment);
         }
-
+        return null;
     }
 
     public Appointments cancelConsultationLink(Long apptId){

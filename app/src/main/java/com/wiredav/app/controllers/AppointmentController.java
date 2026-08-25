@@ -3,6 +3,7 @@ package com.wiredav.app.controllers;
 import com.wiredav.app.dtos.appointmentDTOs.*;
 import com.wiredav.app.entities.Appointments;
 import com.wiredav.app.services.AppointmentService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "getAppointment")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<GetAppointmentResponseDTO> getAppointment(@PathVariable("id") Long id) {
         var appointment = appointmentService.getAppointmentById(id).toGetAppointmentResponseDTO();
@@ -28,7 +30,8 @@ public class AppointmentController {
                 .body(appointment);
     }
 
-    @GetMapping("")
+    @PostMapping("/list")
+    @Operation(summary = "getAppointmentsList")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<GetAppointmentsListResponseDTO> getAppointmentsList(@RequestBody GetAppointmentsListRequestDTO request){
         var appointmentsList = Appointments.toGetAppointmentsListResponseDTO(appointmentService.getAppointmentsByPersonnelAndTimeframe(request));
@@ -38,6 +41,7 @@ public class AppointmentController {
     }
 
     @PostMapping("")
+    @Operation(summary = "makeAppointment")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<MakeAppointmentResponseDTO> makeAppointment(@RequestBody MakeAppointmentRequestDTO apptRequest) {
         var response = appointmentService.makeAppointment(apptRequest).toMakeAppointmentResponseDTO();
@@ -47,6 +51,7 @@ public class AppointmentController {
     }
 
     @PutMapping("")
+    @Operation(summary = "modifyAppointment")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ModifyAppointmentResponseDTO> modifyAppointment(@RequestBody ModifyAppointmentRequestDTO request){
         var response = appointmentService.modifyAppointment(request).toModifyAppointmentResponseDTO();

@@ -123,12 +123,19 @@ public class Appointments {
         return new ModifyAppointmentResponseDTO(
                 this.appointmentId,
                 this.status,
-                this.client.toGetClientResponseDTO(),
+                this.client.toModifyAppointmentResponseClientDTO(),
                 this.personnel.toPersonnelInfoDTO(),
                 this.timeslot.toTimeslotWithIdDTO(),
                 this.appointmentType,
                 this.createdAt,
                 this.updatedAt
+        );
+    }
+
+    public RequestConsultResponseDTO toRequestConsultResponseDTO(){
+        return new RequestConsultResponseDTO(
+                this.client.toRequestConsultClientResponseDTO(),
+                this.timeslot.toTimeslotDTO()
         );
     }
 

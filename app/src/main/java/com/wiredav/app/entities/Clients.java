@@ -1,9 +1,6 @@
 package com.wiredav.app.entities;
 
-import com.wiredav.app.dtos.appointmentDTOs.CancelLinkResponseClientDTO;
-import com.wiredav.app.dtos.appointmentDTOs.GetAppointmentResponseClientDTO;
-import com.wiredav.app.dtos.appointmentDTOs.MakeAppointmentResponseClientDTO;
-import com.wiredav.app.dtos.appointmentDTOs.ModifyAppointmentResponseClientDTO;
+import com.wiredav.app.dtos.appointmentDTOs.*;
 import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
@@ -86,21 +83,20 @@ public class Clients {
         );
     }
 
-    public MakeAppointmentResponseClientDTO toMakeAppointmentResponseClientDTOWithoutEmail() {
-        return new MakeAppointmentResponseClientDTO(
-                this.clientId,
-                this.firstName,
-                this.lastName,
-                this.phoneNumber,
-                this.emailAddress
-        );
-    }
-
     public ModifyAppointmentResponseClientDTO toModifyAppointmentResponseClientDTO() {
         return new ModifyAppointmentResponseClientDTO(
                 this.clientId,
                 this.firstName,
                 this.lastName
+        );
+    }
+
+    public RequestConsultClientDTO toRequestConsultClientResponseDTO(){
+        return new RequestConsultClientDTO(
+                this.firstName,
+                this.lastName,
+                this.emailAddress,
+                this.phoneNumber
         );
     }
 }

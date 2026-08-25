@@ -3,7 +3,6 @@ package com.wiredav.app.services;
 import com.wiredav.app.dtos.appointmentDTOs.TimeslotDTO;
 import com.wiredav.app.entities.Appointments;
 import com.wiredav.app.entities.Timeslot;
-import com.wiredav.app.repositories.PersonnelRepository;
 import com.wiredav.app.repositories.TimeslotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TimeslotService {
     private final TimeslotRepository timeslotRepository;
-    private final PersonnelRepository personnelRepository;
 
     public Timeslot makeTimeslot(TimeslotDTO timeslotRequest) {
         Timeslot timeslot = Timeslot.builder()
@@ -49,22 +47,24 @@ public class TimeslotService {
     /**
     Returns True if the timeslot being checked has at least one availability
         an availability qualifies as follows:
-            the number of appointments at that timeslot with a status of 1 (Requested) or 2 (Open) is less than the number of available technicians
+            the number of appointments at that timeslot with a status of 1 (Requested) or 2 (Open) is less than the number of available technicians (currently hardcoded as 5)
      */
     public Boolean isTimeslotAvailable(TimeslotDTO timeslot){
         //get all appointments at that time slot with a status of 1 or 2
         var noOfActiveTimeslotsAtTime = getAllTimeslotsAtStartTime(timeslot.startTime()).stream()
                 .filter(t -> t.getAppointments().getStatus().equals(1) || t.getAppointments().getStatus().equals(2)).count();
+//        var numberOfAvailableTechs = personnelRepository.findAllByRole(2).stream().count();
         // compare the number of appointments to the number of available technicians
-        var numberOfAvailableTechs = personnelRepository.findAllByRole(2).stream().count();
-        return noOfActiveTimeslotsAtTime < numberOfAvailableTechs;
+        System.out.println("Number of active appointments at " + timeslot.startTime() + ": " + noOfActiveTimeslotsAtTime);
+        return noOfActiveTimeslotsAtTime < 5;
     }
 
     public Boolean isTimeslotAvailable(Timeslot timeslot){
         var noOfActiveTimeslotsAtTime = getAllTimeslotsAtStartTime(timeslot.getStartTime()).stream()
                 .filter(t -> t.getAppointments().getStatus().equals(1) || t.getAppointments().getStatus().equals(2)).count();
-        var numberOfAvailableTechs = personnelRepository.findAllByRole(2).stream().count();
-        return noOfActiveTimeslotsAtTime < numberOfAvailableTechs;
+//        var numberOfAvailableTechs = personnelRepository.findAllByRole(2).stream().count();
+        System.out.println("Number of active appointments at " + timeslot.getStartTime() + ": " + noOfActiveTimeslotsAtTime);
+        return noOfActiveTimeslotsAtTime < 5;
     }
 
 

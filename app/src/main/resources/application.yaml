@@ -5,8 +5,6 @@ spring:
     user:
       name: user
       password: password
-  datasource:
-    url: ${SUPABASE_URL}
-    username: ${SUPABASE_USER}
-    password: ${SUPABASE_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+#  datasource:
+#    url: ${SUPABASE_URL}
+#    driver-class-name: org.postgresql.Driver
