@@ -1,6 +1,5 @@
 package com.wiredav.app.dtos.appointmentDTOs;
 
-import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import com.wiredav.app.dtos.personnelDTOs.PersonnelInfoDTO;
 
 import java.time.LocalDateTime;
@@ -8,7 +7,7 @@ import java.time.LocalDateTime;
 public record ModifyAppointmentResponseDTO(
     Long apptId,
     Integer status,
-    GetClientResponseDTO clientInfo,
+    ModifyAppointmentResponseClientDTO clientInfo,
     PersonnelInfoDTO personnelInfo,
     TimeslotWithIdDTO timeslot,
     Integer apptType,
