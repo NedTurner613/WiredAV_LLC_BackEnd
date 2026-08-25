@@ -20,13 +20,13 @@ public class Timeslot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "timeslotId", nullable = false)
+    @Column(name = "timeslot_id", nullable = false)
     private long timeslotId;
 
-    @Column(name = "startTime", nullable = false)
+    @Column(name = "start_time", nullable = false)
     private LocalDateTime startTime;
 
-    @Column(name = "endTime", nullable = false)
+    @Column(name = "end_time", nullable = false)
     private LocalDateTime endTime;
 
     @OneToOne(mappedBy = "timeslot")
