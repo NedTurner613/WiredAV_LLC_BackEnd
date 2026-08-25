@@ -1,5 +1,7 @@
 package com.wiredav.app.entities;
 
+import com.wiredav.app.dtos.clientDTOs.AddClientResponseDTO;
+import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import com.wiredav.app.dtos.appointmentDTOs.*;
 import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import jakarta.persistence.*;
@@ -93,6 +95,27 @@ public class Clients {
 
     public RequestConsultClientDTO toRequestConsultClientResponseDTO(){
         return new RequestConsultClientDTO(
+                this.firstName,
+                this.lastName,
+                this.emailAddress,
+                this.phoneNumber
+        );
+    }
+
+    // Add new Client response
+    public AddClientResponseDTO toAddClientResponseDTO() {
+        return new AddClientResponseDTO(
+                this.clientId,
+                this.firstName,
+                this.lastName,
+                this.emailAddress,
+                this.phoneNumber
+        );
+    }
+
+    public GetClientResponseDTO toGetClientByIdResponseDTO () {
+        return new GetClientResponseDTO(
+                this.clientId,
                 this.firstName,
                 this.lastName,
                 this.emailAddress,
