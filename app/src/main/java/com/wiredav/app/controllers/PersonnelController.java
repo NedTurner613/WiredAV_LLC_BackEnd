@@ -26,7 +26,7 @@ public class PersonnelController {
         var result = personnelService.registerPersonnel(newUser);
         System.out.println("If you see this line, you at least got to just before the return in the controller");
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body(result.toAddPersonnelResponseDTO());
     }
 
