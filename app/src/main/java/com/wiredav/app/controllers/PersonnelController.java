@@ -24,6 +24,7 @@ public class PersonnelController {
     public ResponseEntity<AddPersonnelResponseDTO> registerUser(@RequestBody AddPersonnelRequestDTO newUser){
         System.out.println("If you see this line, the service worked");
         var result = personnelService.registerPersonnel(newUser);
+        System.out.println(result);
         System.out.println("If you see this line, you at least got to just before the return in the controller");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
