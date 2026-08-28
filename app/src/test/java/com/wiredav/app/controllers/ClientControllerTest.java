@@ -48,7 +48,7 @@ class ClientControllerTest {
         var clientMock = org.mockito.Mockito.mock(Clients.class);
         AddClientResponseDTO expectedResponse = new AddClientResponseDTO(1L, "John", "Doe", "john.doe@example.com", "123-123-1234");
 
-        when(clientService.createClient(any(AddClientRequestDTO.class))).thenReturn(clientMock);
+        when(clientService.createClient(any(AddClientRequestDTO.class))).thenReturn(clientMock.toAddClientResponseDTO());
         when(clientMock.toAddClientResponseDTO()).thenReturn(expectedResponse);
 
         mockMvc.perform(post("/api/v1/clients/addClient")
@@ -86,7 +86,7 @@ class ClientControllerTest {
         var clientMock = org.mockito.Mockito.mock(Clients.class);
         GetClientResponseDTO expectResponse = new GetClientResponseDTO(clientId, "Alice", "Wonderland", "alice.wonderland@example.com", "123-123-1234");
 
-        when(clientService.getClientById(clientId)).thenReturn(clientMock);
+        when(clientService.getClientById(clientId)).thenReturn(expectResponse);
         when(clientMock.toGetClientByIdResponseDTO()).thenReturn(expectResponse);
 
         mockMvc.perform(get("/api/v1/clients/{id}", clientId))
