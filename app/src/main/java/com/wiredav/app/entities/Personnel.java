@@ -25,8 +25,8 @@ public class Personnel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "personnel_id", nullable = false)
-    private long personnelId;
+    @Column(name = "personnel_id")
+    private Long personnelId;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
