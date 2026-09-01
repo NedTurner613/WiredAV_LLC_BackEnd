@@ -3,7 +3,7 @@ package com.wiredav.app.entities;
 import com.wiredav.app.dtos.appointmentDTOs.GetAppointmentResponsePersonnelDTO;
 import com.wiredav.app.dtos.appointmentDTOs.GetAppointmentsListResponseEntryPersonnelDTO;
 import com.wiredav.app.dtos.appointmentDTOs.MakeAppointmentResponsePersonnelDTO;
-import com.wiredav.app.dtos.personnelDTOs.AddTechnicianResponseDTO;
+import com.wiredav.app.dtos.personnelDTOs.RegisterTechnicianResponseDTO;
 import com.wiredav.app.dtos.personnelDTOs.GetPersonnelListResponseDTO;
 import com.wiredav.app.dtos.personnelDTOs.PersonnelInfoDTO;
 import jakarta.persistence.*;
@@ -79,8 +79,8 @@ public class Personnel {
     }
 
     //Register Personnel response
-    public AddTechnicianResponseDTO toAddPersonnelResponseDTO() {
-        AddTechnicianResponseDTO dto = new AddTechnicianResponseDTO(
+    public RegisterTechnicianResponseDTO toAddPersonnelResponseDTO() {
+        RegisterTechnicianResponseDTO dto = new RegisterTechnicianResponseDTO(
                 this.personnelId,
                 this.firstName,
                 this.lastName,
