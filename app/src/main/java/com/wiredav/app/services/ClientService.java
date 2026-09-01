@@ -1,13 +1,16 @@
 package com.wiredav.app.services;
 
 import com.wiredav.app.dtos.clientDTOs.AddClientRequestDTO;
+import com.wiredav.app.dtos.clientDTOs.AddClientResponseDTO;
+import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
 import com.wiredav.app.entities.Clients;
 import com.wiredav.app.exception.ClientNotFoundException;
 import com.wiredav.app.repositories.ClientsRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.ErrorResponseException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -50,7 +53,8 @@ public class ClientService {
     */
     private final ClientsRepository clientsRepository;
 
-    public Clients createClient(AddClientRequestDTO request) {
+    @Transactional
+    public AddClientResponseDTO createClient(AddClientRequestDTO request) {
         Clients newClient = Clients.builder()
                 .firstName(request.firstName())
                 .lastName(request.lastName())
@@ -58,15 +62,19 @@ public class ClientService {
                 .phoneNumber(request.phoneNumber())
                 .build();
 
-        return clientsRepository.save(newClient);
+        Clients savedClient = clientsRepository.save(newClient);
+        return savedClient.toAddClientResponseDTO();
     }
 
-    public List<Clients> getClients() {
-        return (List<Clients>) clientsRepository.findAll();
+    @Transactional
+    public Page<GetClientResponseDTO> getClients(Pageable pageable) {
+        return clientsRepository.findAll(pageable).map(Clients::toGetClientResponseDTO);
     }
 
-    public Clients getClientById(Long clientId) {
+    @Transactional
+    public GetClientResponseDTO getClientById(Long clientId) {
         return clientsRepository.findById(clientId)
+                .map(Clients::toGetClientByIdResponseDTO)
                 .orElseThrow(() -> new ClientNotFoundException(clientId));
     }
 }
