@@ -5,6 +5,7 @@ import com.wiredav.app.entities.Personnel;
 import com.wiredav.app.services.PersonnelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -47,7 +48,8 @@ public class PersonnelController {
 //                .build();
 //    }
 //
-    @PostMapping("/update")
+    @PutMapping("/update")
+    @Transactional
     public ResponseEntity<PersonnelInfoDTO> updatePersonnel(@RequestBody PersonnelInfoDTO newInfo){
         Personnel updatedPersonnel = personnelService.updatePersonnel(newInfo);
         return ResponseEntity
