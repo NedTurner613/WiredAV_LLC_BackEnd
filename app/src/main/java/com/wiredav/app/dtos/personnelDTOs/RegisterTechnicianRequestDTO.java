@@ -2,7 +2,7 @@ package com.wiredav.app.dtos.personnelDTOs;
 
 
 
-public record AddPersonnelRequestDTO(
+public record RegisterTechnicianRequestDTO(
         String firstName,
         String lastName,
         String email,

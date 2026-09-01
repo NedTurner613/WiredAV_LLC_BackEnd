@@ -16,34 +16,38 @@ public class PersonnelService {
 
     private final PersonnelRepository personnelRepository;
 
-    public Personnel registerPersonnel(AddPersonnelRequestDTO request){
-        Personnel newPersonnel = Personnel.builder()
+
+    //This is for registering technicians to the company roster
+    public Personnel registerTechnician(RegisterTechnicianRequestDTO request){
+        Personnel newTechnician = Personnel.builder()
                 .firstName(request.firstName())
                 .lastName(request.lastName())
                 .personnelEmail(request.email())
                 .role(request.role())
                 .build();
 
-
-        return personnelRepository.save(newPersonnel);
+        return personnelRepository.save(newTechnician);
     }
 
 //    public LoginResponseDTO Login(LoginRequestDTO loginInfo){
 //        return new LoginResponseDTO();
 //    }
 
-//    public PersonnelInfoDTO AddPersonnel(AddPersonnelRequestDTO info){
-//        return new PersonnelInfoDTO();
-//    }
-//
 //    public Boolean RemovePersonnel(Long personnelId){
 //        return true;
 //    }
 //
-//    public PersonnelInfoDTO UpdatePersonnel(PersonnelInfoDTO newInfo){
-//        return newInfo;
-//    }
-//
+    public Personnel updatePersonnel(PersonnelInfoDTO newInfo){
+        var updatedPersonnel = personnelRepository.findById(newInfo.personnelId()).get();
+
+        updatedPersonnel.setFirstName(newInfo.firstName());
+        updatedPersonnel.setLastName(newInfo.lastName());
+        updatedPersonnel.setPersonnelEmail(newInfo.email());
+        updatedPersonnel.setRole(newInfo.role());
+
+        return updatedPersonnel;
+    }
+
     public Personnel getPersonnel(Long personnelId){
         var personnel = personnelRepository.findById(personnelId);
 
@@ -54,7 +58,7 @@ public class PersonnelService {
         }
     }
 
-    public Set<Personnel> GetPersonnelList(){
+    public Set<Personnel> getPersonnelList(){
         var allPersonnel = personnelRepository.findAll();
         Set<Personnel> personnelList = new HashSet<>();
 
