@@ -5,6 +5,25 @@ spring:
     user:
       name: user
       password: password
+    oauth2:
+      client:
+        registration:
+          supabase:
+#            provider: supabase
+            client-id: ${SUPABASE_CLIENT_ID}
+            client-secret: ${SUPABASE_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope: openid, email, profile
+        provider:
+          supabase:
+            authorization-uri: ${SUPABASE_AUTHORIZATION_URI}
+            token-uri: ${SUPABASE_TOKEN_URI}
+            user-info-uri: ${SUPABASE_USER_INFO_URI}
+            user-name-attribute: sub
   datasource:
     url: ${SUPABASE_URL}
     driver-class-name: org.postgresql.Driver
+  springdoc:
+    show-login-endpoint: true
+    show-actuator: true
