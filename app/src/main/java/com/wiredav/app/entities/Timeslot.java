@@ -20,7 +20,7 @@ public class Timeslot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "timeslot_id")
+    @Column(name = "timeslot_id", nullable = false)
     private long timeslotId;
 
     @Column(name = "start_time", nullable = false)

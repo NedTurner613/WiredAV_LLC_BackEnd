@@ -89,16 +89,12 @@ public class AppointmentService {
     }
 
     public Appointments requestConsultation(RequestConsultRequestDTO request){
-//        Timeslot timeslot = Timeslot.builder()
-//                .startTime(request.timeslot().startTime())
-//                .endTime(request.timeslot().endTime())
-//                .build();
-        var timeslotDto = request.timeslot();
+        Timeslot timeslot = Timeslot.builder()
+                .startTime(request.timeslot().startTime())
+                .endTime(request.timeslot().endTime())
+                .build();
         //first check if the timeslot is available
-        if(timeslotService.isTimeslotAvailable(timeslotDto)) {
-            //create the timeslot
-
-            var timeslot = timeslotService.makeTimeslot(timeslotDto);
+        if(timeslotService.isTimeslotAvailable(timeslot)) {
             //check if a client with that email already exists
             Clients client = clientsRepository.findByEmailAddress(request.clientInfo().email()).orElse(null);
             if(client == null) {
