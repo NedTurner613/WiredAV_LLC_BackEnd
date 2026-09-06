@@ -20,7 +20,7 @@ public class Appointments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "appointment_id", nullable = false)
+    @Column(name = "appointment_id")
     private long appointmentId;
 
     @ManyToOne
