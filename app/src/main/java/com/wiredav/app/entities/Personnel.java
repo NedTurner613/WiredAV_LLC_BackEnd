@@ -3,7 +3,7 @@ package com.wiredav.app.entities;
 import com.wiredav.app.dtos.appointmentDTOs.GetAppointmentResponsePersonnelDTO;
 import com.wiredav.app.dtos.appointmentDTOs.GetAppointmentsListResponseEntryPersonnelDTO;
 import com.wiredav.app.dtos.appointmentDTOs.MakeAppointmentResponsePersonnelDTO;
-import com.wiredav.app.dtos.personnelDTOs.AddPersonnelResponseDTO;
+import com.wiredav.app.dtos.personnelDTOs.RegisterTechnicianResponseDTO;
 import com.wiredav.app.dtos.personnelDTOs.GetPersonnelListResponseDTO;
 import com.wiredav.app.dtos.personnelDTOs.PersonnelInfoDTO;
 import jakarta.persistence.*;
@@ -25,8 +25,8 @@ public class Personnel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "personnel_id", nullable = false)
-    private long personnelId;
+    @Column(name = "personnel_id")
+    private Long personnelId;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -79,8 +79,8 @@ public class Personnel {
     }
 
     //Register Personnel response
-    public AddPersonnelResponseDTO toAddPersonnelResponseDTO() {
-        AddPersonnelResponseDTO dto = new AddPersonnelResponseDTO(
+    public RegisterTechnicianResponseDTO toAddPersonnelResponseDTO() {
+        RegisterTechnicianResponseDTO dto = new RegisterTechnicianResponseDTO(
                 this.personnelId,
                 this.firstName,
                 this.lastName,

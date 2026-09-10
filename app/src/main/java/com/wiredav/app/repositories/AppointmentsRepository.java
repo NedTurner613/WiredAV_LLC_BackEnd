@@ -10,6 +10,6 @@ import java.util.Set;
 
 public interface AppointmentsRepository extends CrudRepository<Appointments, Long> {
 
-    @Query("SELECT a FROM Appointments a WHERE a.personnel.personnelId IN :personnelIds AND a.timeslot.startTime >= :start AND a.timeslot.startTime <= :end")
+    @Query("SELECT a FROM Appointments a WHERE a.personnel.personnelId IN :personnelIds OR a.personnel is null AND a.timeslot.startTime >= :start AND a.timeslot.startTime <= :end")
     Optional<Set<Appointments>> findAppointmentsByPersonnelAndTimeframe(Set<Long> personnelIds, LocalDateTime start, LocalDateTime end);
 }
