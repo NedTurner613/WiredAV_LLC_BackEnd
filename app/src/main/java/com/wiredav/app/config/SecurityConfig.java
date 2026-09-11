@@ -40,16 +40,16 @@ public class SecurityConfig {
                 .sessionManagement(c ->c.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS
                 ))
-                .authorizeHttpRequests(auth -> auth.anyRequest()
+                .authorizeHttpRequests(auth -> auth
                          //Whitelist Swagger UI and OpenAPI endpoints
-//                        .requestMatchers(
-//                                "/v3/api-docs/**",
-//                                "/swagger-ui/**",
-//                                "/swagger-ui.html"
-//                        )
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
+                        )
                         .permitAll()
                         // Whitelist your login/auth endpoint
-                        //.requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
                         // Protect everything else
                         .anyRequest()
                                 .authenticated()
