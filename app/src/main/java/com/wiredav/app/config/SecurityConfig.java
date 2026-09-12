@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -32,13 +33,13 @@ import java.util.Map;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri:${SUPABASE_JWK_SET_URI:${JWK_SET_URI:}}}")
+    @Value("${SUPABASE_JWK_SET_URI}")
     private String jwkSetUri;
 
-    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri:${SUPABASE_ISSUER_URI:${JWT_ISSUER_URI:}}}")
+    @Value("${SUPABASE_ISSUER_URI}")
     private String issuerUri;
 
-    @Value("${spring.security.oauth2.resourceserver.jwt.secret-key:${SUPABASE_JWT_SECRET:${JWT_SECRET_KEY:}}}")
+    @Value("${SUPABASE_SECRET_KEY}")
     private String secretKey;
 
     @Bean
@@ -67,45 +68,45 @@ public class SecurityConfig {
         }
 
         // Fallback decoder for dev/testing when no external issuer or secret is configured
-        return token -> {
-            try {
-                SignedJWT signedJWT = SignedJWT.parse(token);
-                var claimsSet = signedJWT.getJWTClaimsSet();
-                Map<String, Object> headers = new HashMap<>(signedJWT.getHeader().toJSONObject());
-                Map<String, Object> claims = new HashMap<>(claimsSet.getClaims());
-
-                Instant issuedAt = claimsSet.getIssueTime() != null ? claimsSet.getIssueTime().toInstant() : Instant.now();
-                Instant expiresAt = claimsSet.getExpirationTime() != null ? claimsSet.getExpirationTime().toInstant() : Instant.now().plusSeconds(3600);
-
-                return new Jwt(token, issuedAt, expiresAt, headers, claims);
-            } catch (Exception e) {
-                throw new JwtException("Failed to decode token", e);
-            }
-        };
+//        return token -> {
+//            try {
+//                SignedJWT signedJWT = SignedJWT.parse(token);
+//                var claimsSet = signedJWT.getJWTClaimsSet();
+//                Map<String, Object> headers = new HashMap<>(signedJWT.getHeader().toJSONObject());
+//                Map<String, Object> claims = new HashMap<>(claimsSet.getClaims());
+//
+//                Instant issuedAt = claimsSet.getIssueTime() != null ? claimsSet.getIssueTime().toInstant() : Instant.now();
+//                Instant expiresAt = claimsSet.getExpirationTime() != null ? claimsSet.getExpirationTime().toInstant() : Instant.now().plusSeconds(3600);
+//
+//                return new Jwt(token, issuedAt, expiresAt, headers, claims);
+//            } catch (Exception e) {
+//                throw new JwtException("Failed to decode token", e);
+//            }
+//        };
+        return null;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .exceptionHandling(c -> c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+        return http
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for REST APIs
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for REST APIs
                 .sessionManagement(c -> c.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS
                 ))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**",
-                                "/swagger-resources/**",
-                                "/webjars/**"
-                        ).permitAll()
-                        .requestMatchers("/api/v1/personnel", "/api/v1/personnel/**").authenticated()
-                        .anyRequest().permitAll()
-                )
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
-
-        return http.build();
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(
+                            "/api/v1/consultations/**",
+                            "/swagger-ui/**",
+                            "/swagger-ui.html",
+                            "/v3/api-docs/**",
+                            "/swagger-resources/**",
+                            "/webjars/**"
+                    ).permitAll();
+                    auth.anyRequest().authenticated();
+//                    auth.anyRequest().permitAll();
+                })
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .build();
     }
 }
