@@ -1,6 +1,7 @@
 package com.wiredav.app.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wiredav.app.config.TestSecurityConfig;
 import com.wiredav.app.dtos.clientDTOs.AddClientRequestDTO;
 import com.wiredav.app.dtos.clientDTOs.AddClientResponseDTO;
 import com.wiredav.app.dtos.clientDTOs.GetClientResponseDTO;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = ClientController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@Import(TestSecurityConfig.class)
 class ClientControllerTest {
     @Autowired
     private MockMvc mockMvc;
